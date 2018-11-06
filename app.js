@@ -8,6 +8,16 @@ const auth = require('./routes/auth');
 
 const app = express();
 
+//load keys 
+const keys = require('./config/keys');
+
+//mongoose connect
+mongoose.connect(keys.mongoURI, {
+    useNewUrlParser: true
+}).then(() => {
+    console.log('db connect');
+}).catch(err => console.log(err));
+
 app.get('/', (req, res) => {
     res.send('it works');
 });
