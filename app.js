@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cookiesParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
-
+const exphbs = require('express-handlebars');
 // load user model
 require('./models/user');
 //passport config
@@ -28,6 +28,15 @@ mongoose
     console.log('db connect');
   })
   .catch(err => console.log(err));
+
+// handlebars middlewares
+app.engine(
+  'handlebars',
+  exphbs({
+    defaultLayout: 'main'
+  })
+);
+app.set('view-engine', 'handlebars');
 
 app.use(cookiesParser());
 app.use(
