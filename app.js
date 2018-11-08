@@ -44,6 +44,12 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// setup globavariables to use req.user globally
+app.use((req, res) => {
+  res.locals.user = req.user || null;
+  next();
+});
+
 app.use('/auth', auth);
 
 const port = process.env.PORT || 5000;
