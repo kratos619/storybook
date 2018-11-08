@@ -20,4 +20,12 @@ router.get(
   }
 );
 
+router.get('/verify', (req, res) => {
+  if (req.user) {
+    console.log(req.user);
+  } else {
+    console.log('not Auth');
+  }
+});
+
 module.exports = router;
