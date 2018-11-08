@@ -10,7 +10,7 @@ require('./models/user');
 require('./config/passport')(passport);
 //load routes
 const auth = require('./routes/auth');
-
+const index = require('./routes/index');
 const app = express();
 
 //load keys
@@ -29,9 +29,6 @@ mongoose
   })
   .catch(err => console.log(err));
 
-app.get('/', (req, res) => {
-  res.send('it works');
-});
 app.use(cookiesParser());
 app.use(
   session({
@@ -45,11 +42,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // setup globavariables to use req.user globally
-app.use((req, res) => {
+app.use((req, res, next) => {
   res.locals.user = req.user || null;
   next();
 });
 
+app.use('/', index);
 app.use('/auth', auth);
 
 const port = process.env.PORT || 5000;
