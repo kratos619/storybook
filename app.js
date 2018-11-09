@@ -34,8 +34,7 @@ const keys = require('./config/keys');
 //mongoose connect
 mongoose
   .connect(
-    keys.mongoURI,
-    {
+    keys.mongoURI, {
       useNewUrlParser: true
     }
   )
@@ -44,10 +43,19 @@ mongoose
   })
   .catch(err => console.log(err));
 
+// handlebars helpers
+const {
+  truncate,
+  formatDate
+} = require('./helpers/hbs')
 // handlebars middlewares
 app.engine(
   'handlebars',
   exphbs({
+    helpers: {
+      truncate: truncate,
+      formatDate: formatDate
+    },
     defaultLayout: 'main'
   })
 );
