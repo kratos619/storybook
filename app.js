@@ -1,5 +1,5 @@
 const express = require('express');
-const path = require('path')
+const path = require('path');
 const mongoose = require('mongoose');
 const cookiesParser = require('cookie-parser');
 const session = require('express-session');
@@ -7,13 +7,26 @@ const passport = require('passport');
 const exphbs = require('express-handlebars');
 // load user model
 require('./models/user');
+require('./models/Story');
 //passport config
 require('./config/passport')(passport);
 //load routes
 const auth = require('./routes/auth');
 const index = require('./routes/index');
 const stories = require('./routes/stories');
+var bodyParser = require('body-parser');
 const app = express();
+
+// body parser middleware
+
+// parse application/x-www-form-urlencoded
+app.use(
+  bodyParser.urlencoded({
+    extended: false
+  })
+);
+// parse application/json
+app.use(bodyParser.json());
 
 //load keys
 const keys = require('./config/keys');
@@ -21,7 +34,8 @@ const keys = require('./config/keys');
 //mongoose connect
 mongoose
   .connect(
-    keys.mongoURI, {
+    keys.mongoURI,
+    {
       useNewUrlParser: true
     }
   )
@@ -57,7 +71,7 @@ app.use((req, res, next) => {
   next();
 });
 
-//static folders
+//static folders for css and js files
 app.use(express.static(path.join(__dirname, 'public')));
 //routes
 app.use('/', index);
