@@ -23,8 +23,12 @@
                 <span class="badge ">{{status}}</span>
             </td>
             <td>
-                <a class="waves-effect waves-light red darken-1 btn-small"> <i class="fa fa-trash" aria-hidden="true"></i>
-                    Delete</a>
+                <form action="/stories/{{id}}?_method=DELETE" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="waves-effect red darken-1 waves-light btn-small">
+                        <i class="fa fa-trash "></i> Delete
+                    </button>
+                </form>
             </td>
             <td>
 

@@ -99,7 +99,17 @@ router.put('/:id', (req, res) => {
 
         story.save().then(story => {
             res.redirect('/dashboard');
-        })
+        });
+    });
+});
+
+
+// delete Mehtod
+router.delete('/:id', (req, res) => {
+    Story.findByIdAndDelete({
+        _id: req.params.id
+    }).then(() => {
+        res.redirect('/dashboard');
     })
 })
 
