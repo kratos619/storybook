@@ -15,6 +15,7 @@ const auth = require('./routes/auth');
 const index = require('./routes/index');
 const stories = require('./routes/stories');
 var bodyParser = require('body-parser');
+const methodOverride = require('method-override')
 const app = express();
 
 // body parser middleware
@@ -27,6 +28,9 @@ app.use(
 );
 // parse application/json
 app.use(bodyParser.json());
+
+// method override meddilewares
+app.use(methodOverride('_method'))
 
 //load keys
 const keys = require('./config/keys');
