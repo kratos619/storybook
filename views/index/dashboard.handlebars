@@ -1,3 +1,48 @@
 <h1>Welcome {{user.firstname}} </h1>
 
 <h4>Your Stories</h4>
+{{#if stories}}
+
+<table class="striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th></th>
+            <th>Action</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each stories}}
+        <tr>
+            <td> <a href="/stories/show/{{id}}">{{title}}</a></td>
+            <td>{{formatDate date 'Do MMMM YYYY'}}</td>
+            <td>
+                <span class="badge ">{{status}}</span>
+            </td>
+            <td>
+                <a class="waves-effect waves-light red darken-1 btn-small"> <i class="fa fa-trash" aria-hidden="true"></i>
+                    Delete</a>
+            </td>
+            <td>
+
+            </td>
+            <td>
+                <a href="/stories/edit/{{id}}" class="waves-effect waves-light  btn-small"><i class="fa fa-pencil-square-o"
+                        aria-hidden="true"></i>
+                    Edit</a>
+            </td>
+        </tr>
+
+        {{/each}}
+
+    </tbody>
+</table>
+
+{{else}}
+
+<p>No Stories</p>
+
+{{/if}}
