@@ -5,9 +5,10 @@
     <div class="col s12 m4">
         <div class="hoverable card story-text">
             <div class="card-image">
-                <a href="/stories/{{id}}" class="btn-floating halfway-fab waves-effect waves-light red">
-                    <i class="fa fa-pencil-square" aria-hidden="true"></i>
-                </a>
+                {{#if user}}
+                {{{editIcon user.id ../user.id ids}}}
+                {{/if}}
+
             </div>
             <div class="card-content center-align">
                 <h5>{{title}}</h5>

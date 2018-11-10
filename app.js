@@ -50,7 +50,8 @@ mongoose
 // handlebars helpers
 const {
   truncate,
-  formatDate
+  formatDate,
+  editIcon
 } = require('./helpers/hbs')
 // handlebars middlewares
 app.engine(
@@ -58,7 +59,8 @@ app.engine(
   exphbs({
     helpers: {
       truncate: truncate,
-      formatDate: formatDate
+      formatDate: formatDate,
+      editIcon: editIcon
     },
     defaultLayout: 'main'
   })

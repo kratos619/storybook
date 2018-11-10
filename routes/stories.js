@@ -4,14 +4,20 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Story = mongoose.model('stories');
 const User = mongoose.model('users');
-const { ensureAuthenticated, ensureGuesst } = require('../helpers/auth');
+const {
+  ensureAuthenticated,
+  ensureGuesst
+} = require('../helpers/auth');
 
 //stories index
 router.get('/', (req, res) => {
   Story.find({
-    status: 'public'
-  })
+      status: 'public'
+    })
     .populate('user')
+    .sort({
+      date: 'desc'
+    })
     .then(stories => {
       res.render('stories/index', {
         stories: stories
@@ -22,8 +28,8 @@ router.get('/', (req, res) => {
 // show by id
 router.get('/show/:id', (req, res) => {
   Story.findOne({
-    _id: req.params.id
-  })
+      _id: req.params.id
+    })
     .populate('user')
     .populate('comments.commentUser')
     .then(story => {
@@ -65,13 +71,17 @@ router.post('/', ensureAuthenticated, (req, res) => {
 // stories Edit
 router.get('/edit/:id', ensureAuthenticated, (req, res) => {
   Story.findOne({
-    _id: req.params.id
-  })
-    .populate('user')
+      _id: req.params.id
+    })
     .then(story => {
-      res.render('stories/edit', {
-        story: story
-      });
+      if (story.user != req.user.id) {
+        res.redirect('/stories')
+      } else {
+        res.render('stories/edit', {
+          story: story
+        });
+      }
+
     });
 });
 
