@@ -4,16 +4,13 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Story = mongoose.model('stories');
 const User = mongoose.model('users');
-const {
-  ensureAuthenticated,
-  ensureGuesst
-} = require('../helpers/auth');
+const { ensureAuthenticated, ensureGuesst } = require('../helpers/auth');
 
 //stories index
 router.get('/', (req, res) => {
   Story.find({
-      status: 'public'
-    })
+    status: 'public'
+  })
     .populate('user')
     .sort({
       date: 'desc'
@@ -28,14 +25,28 @@ router.get('/', (req, res) => {
 // show by id
 router.get('/show/:id', (req, res) => {
   Story.findOne({
-      _id: req.params.id
-    })
+    _id: req.params.id
+  })
     .populate('user')
     .populate('comments.commentUser')
     .then(story => {
-      res.render('stories/show', {
-        story: story
-      });
+      if (story.status === 'public') {
+        res.render('stories/show', {
+          story: story
+        });
+      } else {
+        if (req.user) {
+          if (req.user.id == story.user._id) {
+            res.render('stories/show', {
+              story: story
+            });
+          } else {
+            res.redirect('/stories');
+          }
+        } else {
+          res.redirect('/stories');
+        }
+      }
     });
 });
 
@@ -71,18 +82,16 @@ router.post('/', ensureAuthenticated, (req, res) => {
 // stories Edit
 router.get('/edit/:id', ensureAuthenticated, (req, res) => {
   Story.findOne({
-      _id: req.params.id
-    })
-    .then(story => {
-      if (story.user != req.user.id) {
-        res.redirect('/stories')
-      } else {
-        res.render('stories/edit', {
-          story: story
-        });
-      }
-
-    });
+    _id: req.params.id
+  }).then(story => {
+    if (story.user != req.user.id) {
+      res.redirect('/stories');
+    } else {
+      res.render('stories/edit', {
+        story: story
+      });
+    }
+  });
 });
 
 // update form process
@@ -136,6 +145,18 @@ router.post('/comment/:id', (req, res) => {
       res.redirect(`/stories/show/${story.id}`);
     });
   });
+});
+
+//List stories from users
+
+router.get('/user/:userId', function(req, res) {
+  Story.find({ user: req.params.userId, status: 'public' })
+    .populate('user')
+    .then(stories => {
+      res.render('stories/index', {
+        stories: stories
+      });
+    });
 });
 
 module.exports = router;

@@ -14,10 +14,12 @@
                 <h5>{{title}}</h5>
                 <p class="">{{{ truncate body 150}}}</p>
                 <br>
-                <div class="chip">
-                    <img src="{{user.image}}" alt="Contact Person">
-                    {{user.firstname}} {{user.lastname}}
-                </div>
+                <a href="/stories/user/{{user.id}}">
+                    <div class="chip">
+                        <img src="{{user.image}}" alt="Contact Person">
+                        {{user.firstname}} {{user.lastname}}
+                    </div>
+                </a>
             </div>
             <div class="card-action center-align">
                 <a class="btn-gray" href="/stories/show/{{id}}"> <i class="fa fa-book" aria-hidden="true"></i> View</a>
